@@ -19,6 +19,26 @@ function App() {
     setDistance(event.target.value);
   }
 
+  function splitDate(origDate){
+    let parts = origDate.split('.');
+    let splittedDate = Number(parts[2] + parts[1] + parts[0]);
+    return splittedDate;
+  }
+  /*
+  function sortDate (){
+    item.sort((prev, next) => {
+      if ( prev.date > next.date ) return -1;
+      if ( prev.date > next.date ) return 1;
+  });
+  */
+  function sortDate (){
+    item.sort((prev, next) => {
+      if ( splitDate(prev.date) > splitDate(next.date) ) return -1;
+      if ( splitDate(prev.date) > splitDate(next.date) ) return 1;
+  });  
+  
+  }
+
   function newEntry (){
     let i;
     let flag = true;
@@ -29,6 +49,7 @@ function App() {
           cyrDistance = Number(item[i].distance) + Number(distance);
           item[i].distance = Number(item[i].distance) + Number(distance);
           setResult(cyrDistance);
+          sortDate ();
           setDistance("");
           setDate("");
         }
@@ -37,8 +58,8 @@ function App() {
       if (flag) {
         subItem.date = date;
         subItem.distance = distance; 
-
         setResult(item.splice(0, 0, subItem));
+        sortDate ();
         subItem = {};
         setDistance("");
         setDate("");
@@ -65,7 +86,7 @@ function App() {
       <td className = "cell distance-item" key={`distance-${index}`}>
          {elem.distance}
       </td>
-      <td className = "cell edit-item">
+      <td className = "cell edit-item" key={`edit-${index}`}>
         <span className="edit-item" onClick={() => editEntry(index)}><img src={edit} title = "Редактировать запись" alt=""/></span>
         <span className="delete-item" onClick={() => delEntry(index)}><img src={del} title = "Удалить запись" alt=""/></span>
       </td>   
